@@ -4,21 +4,41 @@ Unter Debian stretch zuviel Temperaturentwicklung durch Nvidia Grafik
 alle möglichen tools bezgl. Powermanagement durchprobiert, laptop-mode,
 macfanctl, Kernel-Parameter
 intel_pstate=enable, acpi_osi= 
-hinzugefügt, etc. immer noch temperaturentwicklung,
-nouveau modul entladen, blacklisten etc. führt zu blackscreen
+hinzugefügt, etc. -> aber immer noch Temperaturentwicklung,
+nouveau modul entladen, Modul blacklisten etc. führt zu blackscreen, freezer
+
 Abschalten der nvidia Grafik bzw. Umschalten auf integrierte Grafik mit linux tools 
 ansch. nicht möglich.
 
-Nach mehreren Tagen mehrfach gelesen, Problem ist, dass das Macbook beim Starten 
-eines nicht OSX Betriebssystem wird die integrierte Grafik abschaltet. das muss also als
-erstes verhindert werden. Dafür gibt es verschieden Tricks, mir scheint die rEFInd Variante 
-die geschickteste zu sein
+Nach mehreren Tagen vergeblichen Versuchen mehrfach gelesen:
+ Problem ist, dass das Macbook beim Starten eines nicht OSX Betriebssystem 
+ die integrierte Grafik abschaltet. Das muss also als erstes verhindert werden. 
+ Dafür gibt es verschieden Tricks, mir scheint die rEFInd Variante 
+ die geschickteste zu sein
+ in refind.conf: Zeile spoof_osx_version=10.9 auskommentieren
+
+Auf archwiki dann den entscheidenden Hinweis auf gpu-switch gefunden.
+git clone https://github.com/0xbb/gpu-switch.git und ich habe das linux-tool
+wodurch ich mit gpu-switch -i auf integrierte Grafik nach dem nächsten reboot Umschalten
+kann.
+Nach dem Reboot das Erfolgserlebnis, Einstellungen->Details:
+Grafik	Intel Ivybridge mobile
+
+Super, viel zeit für diesen Schritt verbraten.
+
+Doch die Freude währte nicht lange, noch immer bläst der Lüfter wie ...
+
+Das Logfile von macfanctl zeigt noch immer unveränderte Temperaturen von über 55°C
+
+Die NVidia Grafik ist zwar nicht mehr in Verwendung, aber noch immer 'powered'
+
+Die Eingabe  echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+erledigt diesen letzten Schritt
 
 
 1. rEFInd Bootloader tweak, refind.conf: spoof_osx_version=10.9 #war vorschlag, arbeitet gut
-2. https://github.com/0xbb/gpu-switch.git, als admin gpu-switch -i; dann reboot
-	anschließend ist integrierte Grafik aktiv (->Details), aber NVIDIA nicht aus,
-	weil immer noch hohe Temperaturentwicklung
-3. jetzt echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+2. gpu-switch -i
+3. reboot
+4. echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
 
-und siehe da: Lüfter regelt langsam runter
+
