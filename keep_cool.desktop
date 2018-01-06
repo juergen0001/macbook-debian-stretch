@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=keep_cool
+Exec=/home/user/macbook-debian-stretch/keep_cool.sh
