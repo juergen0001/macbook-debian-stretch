@@ -1,0 +1,24 @@
+was habe ich gesucht
+
+Unter Debian stretch zuviel Temperaturentwicklung durch Nvidia Grafik
+alle möglichen tools bezgl. Powermanagement durchprobiert, laptop-mode,
+macfanctl, Kernel-Parameter
+intel_pstate=enable, acpi_osi= 
+hinzugefügt, etc. immer noch temperaturentwicklung,
+nouveau modul entladen, blacklisten etc. führt zu blackscreen
+Abschalten der nvidia Grafik bzw. Umschalten auf integrierte Grafik mit linux tools 
+ansch. nicht möglich.
+
+Nach mehreren Tagen mehrfach gelesen, Problem ist, dass das Macbook beim Starten 
+eines nicht OSX Betriebssystem wird die integrierte Grafik abschaltet. das muss also als
+erstes verhindert werden. Dafür gibt es verschieden Tricks, mir scheint die rEFInd Variante 
+die geschickteste zu sein
+
+
+1. rEFInd Bootloader tweak, refind.conf: spoof_osx_version=10.9 #war vorschlag, arbeitet gut
+2. https://github.com/0xbb/gpu-switch.git, als admin gpu-switch -i; dann reboot
+	anschließend ist integrierte Grafik aktiv (->Details), aber NVIDIA nicht aus,
+	weil immer noch hohe Temperaturentwicklung
+3. jetzt echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+
+und siehe da: Lüfter regelt langsam runter
