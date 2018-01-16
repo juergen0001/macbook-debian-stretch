@@ -2,27 +2,27 @@
 
 #visudo: %user ALL = NOPASSWD: /usr/local/sbin/vgaswitch.sh
 
-
+PROC_ENTRY=/sys/kernel/debug/vgaswitcheroo/switch 
 
 TOSWITCH=$1
 
 
 
 switch_to_integrated () {
-	echo DIGD > /sys/kernel/debug/vgaswitcheroo/switch 
+	[ -f $PROC_ENTRY ] && echo DIGD > $PROC_ENTRY
 	/usr/local/sbin/gpu-switch -i
 }
 
 switch_to_nvidia () {
-	echo DDIS > /sys/kernel/debug/vgaswitcheroo/switch 
+	[ -f $PROC_ENTRY ] && echo DDIS > $PROC_ENTRY
 	/usr/local/sbin/gpu-switch -d
 }
 
 power_off_unused () {
-	echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+	[ -f $PROC_ENTRY ] && echo OFF > $PROC_ENTRY
 }
 power_on_all () {
-	echo ON  > /sys/kernel/debug/vgaswitcheroo/switch
+	[ -f $PROC_ENTRY ] && echo ON > $PROC_ENTRY
 }
 
 

@@ -1,0 +1,1 @@
+watch "cat /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_cur_freq; tail -n1 /var/log/macfanctl.log"
